@@ -17,7 +17,8 @@ class AFN {
     char *F; //multimea starilor finale
 public:
     explicit AFN(const char *fisier); //constructor AFN
-    void display();
+    //void display();
+    bool verify(const char *cuvant);
 };
 
 AFN::AFN(const char *fisier) {
@@ -45,7 +46,7 @@ AFN::AFN(const char *fisier) {
     f.close();
 }
 
-void AFN::display() //afisarea informatiilor citite despre un AFN
+/*void AFN::display() //afisarea informatiilor citite despre un AFN
 {
     int i;
     cout << n << '\n';
@@ -60,9 +61,35 @@ void AFN::display() //afisarea informatiilor citite despre un AFN
     cout << nf << '\n';
     for (i = 0; i < nf; i++)
         cout << F[i] << ' '; //afisare multime de stari finale
+}*/
+
+bool AFN::verify(const char *cuvant) //verifica daca un cuvant apartine sau nu limbajului recunoscut de automat
+{
+    int i;
+    char stareaux = stare;
+    if (!cuvant[0]) //am ajuns la sfarsitul cuvantului
+    {
+        for (i = 0; i < nf; i++)
+            if (stare == F[i]) //daca starea in care am ajuns este una dintre cele finale
+                return true;
+        return false; //daca starea in care am ajuns nu este finala
+    }
+    for (i = 0; i < nrt; i++)
+        if ((T[i].s1 == stareaux) && (T[i].c == cuvant[0]))
+            //caut tranzitiile in care starea s1 este starea in care ma aflu,
+            //iar caracterul c este simbolul din cuvant la care am ajuns
+        {
+            stare = T[i].s2; //starea curenta este acum s2
+            if (verify(cuvant + 1)) return true; //si trec la caracterul urmator
+        }
+    return false;
 }
+
 int main() {
     AFN x("date.txt"); //declarare automat
-    x.display();
+    //x.display();
+    if (x.verify("abab")) //verific cuvant
+        cout << "DA";
+    else cout << "NU";
     return 0;
 }
