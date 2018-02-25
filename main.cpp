@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 using namespace std;
 
@@ -85,11 +86,20 @@ bool AFN::verify(const char *cuvant) //verifica daca un cuvant apartine sau nu l
     return false;
 }
 
+void output()
+//afiseaza pe ecran daca un cuvant apartine sau nu limbajului recunoscut de un automat
+{
+    AFN x("date.txt");
+    char word[101];
+    cin >> word; //citire cuvant
+    if ((strcmp(word, "_") == 0) || (x.verify(word)))
+        //daca avem cuvantul vid sau daca metoda verify returneaza true
+        cout << "Cuvantul apartine limbajului recunoscut de automat.";
+    else cout << "Cuvantul nu apartine limbajului recunoscut de automat.";
+    cout << '\n';
+}
+
 int main() {
-    AFN x("date.txt"); //declarare automat
-    //x.display();
-    if (x.verify("abab")) //verific cuvant
-        cout << "DA";
-    else cout << "NU";
+    output();
     return 0;
 }
