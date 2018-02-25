@@ -17,6 +17,7 @@ class AFN {
     char *F; //multimea starilor finale
 public:
     explicit AFN(const char *fisier); //constructor AFN
+    void display();
 };
 
 AFN::AFN(const char *fisier) {
@@ -44,7 +45,24 @@ AFN::AFN(const char *fisier) {
     f.close();
 }
 
+void AFN::display() //afisarea informatiilor citite despre un AFN
+{
+    int i;
+    cout << n << '\n';
+    for (i = 0; i < n; i++)
+        cout << Q[i] << ' '; //afisare multime de stari ale automatului
+    cout << '\n' << s << '\n';
+    for (i = 0; i < s; i++)
+        cout << A[i] << ' '; //afisare alfabet de intrare
+    cout << '\n' << stare << '\n' << nrt << '\n';
+    for (i = 0; i < nrt; i++)
+        cout << T[i].s1 << ' ' << T[i].c << ' ' << T[i].s2 << '\n'; //afisare tranzitii
+    cout << nf << '\n';
+    for (i = 0; i < nf; i++)
+        cout << F[i] << ' '; //afisare multime de stari finale
+}
 int main() {
     AFN x("date.txt"); //declarare automat
+    x.display();
     return 0;
 }
