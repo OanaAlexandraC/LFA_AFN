@@ -18,11 +18,13 @@ class AFN {
     char *F; //multimea starilor finale
 public:
     explicit AFN(const char *fisier); //constructor AFN
+    ~AFN(); //destructor AFN
     //void display();
     bool verify(const char *cuvant);
 };
 
-AFN::AFN(const char *fisier) {
+AFN::AFN(const char *fisier) //constructor
+{
     n = s = nrt = nf = 0;
     stare = 0;
     ifstream f(fisier); //deschidere fisier
@@ -45,6 +47,14 @@ AFN::AFN(const char *fisier) {
     for (i = 0; i < nf; i++)
         f >> F[i]; //citire multime de stari finale ale automatului
     f.close();
+}
+
+AFN::~AFN() //destructor
+{
+    delete[] Q;
+    delete[] A;
+    delete[] T;
+    delete[] F;
 }
 
 /*void AFN::display() //afisarea informatiilor citite despre un AFN
