@@ -102,8 +102,11 @@ void output()
     AFN x("date.txt");
     char word[101];
     cin >> word; //citire cuvant
-    if ((strcmp(word, "_") == 0) || (x.verify(word)))
-        //daca avem cuvantul vid sau daca metoda verify returneaza true
+    if (strcmp(word, "_") == 0)
+        //daca avem cuvantul vid
+        word[0] = NULL;
+    if (x.verify(word))
+        //daca metoda verify returneaza true
         cout << "Cuvantul apartine limbajului recunoscut de automat.";
     else cout << "Cuvantul nu apartine limbajului recunoscut de automat.";
     cout << '\n';
