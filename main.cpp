@@ -9,7 +9,7 @@ class AFN {
     char *Q; //multimea de stari ale automatului
     int s; //numarul simbolurilor din alfabetul de intrare
     char *A; //alfabetul de intrare
-    char stare; //starea initiala a alfabetului
+    char stare; //starea initiala a automatului
     int nrt; //numar de tranzitii
     struct delta {
         char s1, s2, c;
@@ -19,11 +19,15 @@ class AFN {
 public:
     explicit AFN(const char *fisier); //constructor AFN
     ~AFN(); //destructor AFN
-    //void display();
-    bool verify(const char *cuvant);
+    //void afisare();
+    bool verificare(const char *cuvant);
 };
 
-AFN::AFN(const char *fisier) //constructor
+/**
+ * constructor
+ * @param fisier (numele fisierului)
+ */
+AFN::AFN(const char *fisier)
 {
     n = s = nrt = nf = 0;
     stare = 0;
@@ -49,15 +53,20 @@ AFN::AFN(const char *fisier) //constructor
     f.close();
 }
 
-AFN::~AFN() //destructor
-{
+/**
+ * destructor
+ */
+AFN::~AFN() {
     delete[] Q;
     delete[] A;
     delete[] T;
     delete[] F;
 }
 
-/*void AFN::display() //afisarea informatiilor citite despre un AFN
+/**
+ * afisarea informatiilor citite despre un AFN
+ */
+/*void AFN::afisare()
 {
     int i;
     cout << n << '\n';
@@ -74,8 +83,11 @@ AFN::~AFN() //destructor
         cout << F[i] << ' '; //afisare multime de stari finale
 }*/
 
-bool AFN::verify(const char *cuvant) //verifica daca un cuvant apartine sau nu limbajului recunoscut de automat
-{
+/**
+ * @param cuvant
+ * @return true in cazul in care cuvant apartine limbajului recunoscut de automat si false in caz contrar
+ */
+bool AFN::verificare(const char *cuvant) {
     int i;
     char stareaux = stare;
     if (!cuvant[0]) //am ajuns la sfarsitul cuvantului
@@ -91,21 +103,22 @@ bool AFN::verify(const char *cuvant) //verifica daca un cuvant apartine sau nu l
             //iar caracterul c este simbolul din cuvant la care am ajuns
         {
             stare = T[i].s2; //starea curenta este acum s2
-            if (verify(cuvant + 1)) return true; //si trec la caracterul urmator
+            if (verificare(cuvant + 1)) return true; //si trec la caracterul urmator
         }
     return false;
 }
 
-void output()
-//afiseaza pe ecran daca un cuvant apartine sau nu limbajului recunoscut de un automat
-{
+/**
+ * afiseaza pe ecran daca un cuvant apartine sau nu limbajului recunoscut de un automat
+ */
+void cuvant() {
     AFN x("date.txt");
-    char word[101];
-    cin >> word; //citire cuvant
-    if (strcmp(word, "_") == 0)
+    char cuvant[101];
+    cin >> cuvant; //citire cuvant
+    if (strcmp(cuvant, "_") == 0)
         //daca avem cuvantul vid
-        word[0] = NULL;
-    if (x.verify(word))
+        cuvant[0] = NULL;
+    if (x.verificare(cuvant))
         //daca metoda verify returneaza true
         cout << "Cuvantul apartine limbajului recunoscut de automat.";
     else cout << "Cuvantul nu apartine limbajului recunoscut de automat.";
@@ -113,6 +126,6 @@ void output()
 }
 
 int main() {
-    output();
+    cuvant();
     return 0;
 }
